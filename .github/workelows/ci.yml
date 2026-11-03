@@ -33,8 +33,9 @@ jobs:
         uses: zricethezav/gitleaks-action@v2
 
 
-        # Upload the Gitleaks report
+             # Upload the Gitleaks report
       - name: Upload Gitleaks report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: gitleaks-report
