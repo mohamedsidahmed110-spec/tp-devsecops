@@ -1,37 +1,25 @@
-name: CI/CD democyber
+
+name: DevSecOps Security Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-  build-and-deploy:
+  security:
+    name: Gitleaks Security Scan
     runs-on: ubuntu-latest
-    env:
-      DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/democyber1:latest
 
     steps:
-      # 1. Checkout du code
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      # 2. Analyse Gitleaks (avant la compilation)
+      # Gitleaks scan (before compilation)
       - name: Run Gitleaks scan
         uses: zricethezav/gitleaks-action@v2
-
-      # 3. Installer Java (JDK 21)
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-
-      # 4. Compiler le code Java
-      - name: Compile Java
-        run: mvn compile
-
-      # 5. Build Maven
-      - name: Build Java project with Maven
-        run: mvn clean package
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
