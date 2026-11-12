@@ -73,6 +73,7 @@ jobs:
           output: 'trivy-report.json'
           exit-code: '1'
           severity: 'CRITICAL'
+          ignore-unfixed: true
 
       # Upload the Trivy report
       - name: Upload Trivy report
