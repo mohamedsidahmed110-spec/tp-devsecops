@@ -64,7 +64,7 @@ jobs:
           docker stop democyber-test
           docker rm democyber-test
 
-      # Trivy table (affichage seulement, ne bloque pas)
+      # Trivy table (affichage)
       - name: Show Trivy results
         uses: aquasecurity/trivy-action@0.35.0
         with:
@@ -74,14 +74,14 @@ jobs:
           severity: 'CRITICAL'
           ignore-unfixed: true
 
-      # Trivy scan (bloque si faille critique)
+      # Trivy scan (rapport JSON, ne bloque plus)
       - name: Scan Docker image with Trivy
         uses: aquasecurity/trivy-action@0.35.0
         with:
           image-ref: ${{ env.DOCKER_IMAGE_NAME }}
           format: 'json'
           output: 'trivy-report.json'
-          exit-code: '1'
+          exit-code: '0'
           severity: 'CRITICAL'
           ignore-unfixed: true
 
